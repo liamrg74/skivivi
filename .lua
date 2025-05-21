@@ -349,3 +349,60 @@ end
 
 bringButton.MouseButton1Click:Connect(bringUnanchoredModels)
 
+-- Add this to your existing GUI creation script after all other buttons:
+
+-- Kill Aura Button
+local killAuraButton = redButton:Clone()
+killAuraButton.Text = "Kill Aura"
+killAuraButton.Position = UDim2.new(0, 0, 0, 200)
+styleButton(killAuraButton, Color3.fromRGB(255, 85, 85))
+killAuraButton.Parent = buttonsFrame
+
+-- Kill Aura Logic
+local killAuraEnabled = false
+local KILL_AURA_RADIUS = 50
+local DAMAGE_AMOUNT = 100
+
+local function damageNPCsNearPlayer()
+	if not killAuraEnabled then return end
+
+	local player = Players.LocalPlayer
+	local character = player.Character
+	if not character then return end
+
+	local root = character:FindFirstChild("HumanoidRootPart")
+	if not root then return end
+
+	for _, npc in pairs(workspace:GetDescendants()) do
+		if npc:IsA("Model") and isNPC(npc) then
+			local humanoid = npc:FindFirstChildOfClass("Humanoid")
+			local torso = npc:FindFirstChild("HumanoidRootPart") or npc:FindFirstChildWhichIsA("BasePart")
+
+			if humanoid and torso then
+				local distance = (torso.Position - root.Position).Magnitude
+				if distance <= KILL_AURA_RADIUS then
+					humanoid:TakeDamage(DAMAGE_AMOUNT)
+				end
+			end
+		end
+	end
+end
+
+killAuraButton.MouseButton1Click:Connect(function()
+	killAuraEnabled = not killAuraEnabled
+	if killAuraEnabled then
+		killAuraButton.TextColor3 = Color3.fromRGB(255, 0, 0)
+	else
+		killAuraButton.TextColor3 = Color3.fromRGB(150, 150, 150)
+	end
+end)
+
+-- Loop to apply damage periodically
+task.spawn(function()
+	while true do
+		task.wait(0.5)
+		if killAuraEnabled then
+			damageNPCsNearPlayer()
+		end
+	end
+end)
