@@ -406,3 +406,73 @@ task.spawn(function()
 		end
 	end
 end)
+
+-- Auto Drive Button (Add in buttonsFrame)
+local autoDriveButton = redButton:Clone()
+autoDriveButton.Text = "Auto Drive"
+autoDriveButton.Position = UDim2.new(0, 0, 0, 250)
+styleButton(autoDriveButton, Color3.fromRGB(0, 170, 255))
+autoDriveButton.Parent = buttonsFrame
+
+-- Auto-Drive Logic
+local RunService = game:GetService("RunService")
+local autoDriveEnabled = false
+local seat = nil
+local bodyVelocity = nil
+
+autoDriveButton.MouseButton1Click:Connect(function()
+	autoDriveEnabled = not autoDriveEnabled
+
+	local vehicleFolder = workspace:FindFirstChild("Vehicle")
+	if not vehicleFolder then warn("Vehicle folder not found") return end
+
+	local truck = vehicleFolder:FindFirstChild("Truck")
+	if not truck or not truck:IsA("Model") then warn("Truck model not found") return end
+
+	seat = truck:FindFirstChildWhichIsA("VehicleSeat", true)
+	if not seat then warn("No VehicleSeat found in Truck") return end
+
+	if autoDriveEnabled then
+		autoDriveButton.TextColor3 = Color3.fromRGB(0, 255, 255)
+
+		if bodyVelocity and bodyVelocity.Parent then
+			bodyVelocity:Destroy()
+		end
+		bodyVelocity = nil
+	else
+		autoDriveButton.TextColor3 = Color3.fromRGB(150, 150, 150)
+
+		seat.Throttle = 0
+		seat.Steer = 0
+
+		if not bodyVelocity then
+			bodyVelocity = Instance.new("BodyVelocity")
+			bodyVelocity.Velocity = Vector3.new(0, 0, 0)
+			bodyVelocity.MaxForce = Vector3.new(1e5, 1e5, 1e5)
+			bodyVelocity.Parent = seat.Parent.PrimaryPart or seat.Parent:FindFirstChildWhichIsA("BasePart")
+		end
+
+		if seat.Parent.PrimaryPart then
+			seat.Parent.PrimaryPart.RotVelocity = Vector3.new(0, 0, 0)
+		end
+
+		task.delay(0.5, function()
+			if bodyVelocity and bodyVelocity.Parent then
+				bodyVelocity:Destroy()
+				bodyVelocity = nil
+			end
+		end)
+	end
+end)
+
+RunService.Heartbeat:Connect(function()
+	if autoDriveEnabled and seat and seat:IsDescendantOf(workspace) then
+		seat.Throttle = 1
+		seat.Steer = 0
+
+		if bodyVelocity and bodyVelocity.Parent then
+			bodyVelocity:Destroy()
+			bodyVelocity = nil
+		end
+	end
+end)
