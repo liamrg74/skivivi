@@ -361,7 +361,7 @@ killAuraButton.Parent = buttonsFrame
 -- Kill Aura Logic
 local killAuraEnabled = false
 local KILL_AURA_RADIUS = 50
-local DAMAGE_AMOUNT = 100
+local DAMAGE_AMOUNT = 1000
 
 local function damageNPCsNearPlayer()
 	if not killAuraEnabled then return end
