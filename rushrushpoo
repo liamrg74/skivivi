@@ -1,0 +1,90 @@
+local player = game.Players.LocalPlayer
+local mouse = player:GetMouse()
+local camera = workspace.CurrentCamera
+
+local headsFolder = workspace:WaitForChild("MapFolder"):WaitForChild("Players")
+
+local fovCircle = Instance.new("Frame")
+fovCircle.Name = "FOVCircle"
+fovCircle.Size = UDim2.new(0, 120, 0, 120)
+fovCircle.AnchorPoint = Vector2.new(0.5, 0.5)
+fovCircle.Position = UDim2.new(0.5, 0, 0.5, 0)
+fovCircle.BackgroundColor3 = Color3.fromRGB(255, 0, 0)
+fovCircle.BackgroundTransparency = 0.5
+fovCircle.BorderSizePixel = 0
+
+local uiCorner = Instance.new("UICorner")
+uiCorner.CornerRadius = UDim.new(1, 0)
+uiCorner.Parent = fovCircle
+
+local gui = player:WaitForChild("PlayerGui"):FindFirstChild("ScreenGui") or Instance.new("ScreenGui", player.PlayerGui)
+gui.Name = "ScreenGui"
+gui.ResetOnSpawn = false
+fovCircle.Parent = gui
+
+local isLockedOn = false
+local targetPart = nil
+
+local function isInFOV(worldPos)
+	local screenPos, onScreen = camera:WorldToScreenPoint(worldPos)
+	if not onScreen then return false end
+	local circleCenter = Vector2.new(
+		fovCircle.AbsolutePosition.X + fovCircle.AbsoluteSize.X / 2,
+		fovCircle.AbsolutePosition.Y + fovCircle.AbsoluteSize.Y / 2
+	)
+	local distance = (Vector2.new(screenPos.X, screenPos.Y) - circleCenter).Magnitude
+	return distance <= fovCircle.AbsoluteSize.X / 2
+end
+
+local function findHeadTarget()
+	local closestHead = nil
+	local closestDist = math.huge
+
+	for _, model in pairs(headsFolder:GetDescendants()) do
+		if model:IsA("Model") then
+			local head = model:FindFirstChild("Head")
+			if head and head:IsA("BasePart") and isInFOV(head.Position) then
+				local screenPos = camera:WorldToScreenPoint(head.Position)
+				local circleCenter = Vector2.new(
+					fovCircle.AbsolutePosition.X + fovCircle.AbsoluteSize.X / 2,
+					fovCircle.AbsolutePosition.Y + fovCircle.AbsoluteSize.Y / 2
+				)
+				local dist = (Vector2.new(screenPos.X, screenPos.Y) - circleCenter).Magnitude
+				if dist < closestDist then
+					closestHead = head
+					closestDist = dist
+				end
+			end
+		end
+	end
+
+	return closestHead
+end
+
+game:GetService("UserInputService").InputBegan:Connect(function(input, gpe)
+	if gpe then return end
+	if input.KeyCode == Enum.KeyCode.Q then
+		if not isLockedOn then
+			local found = findHeadTarget()
+			if found then
+				targetPart = found
+				isLockedOn = true
+				print("Locked on to: " .. targetPart:GetFullName())
+			end
+		end
+	end
+end)
+
+game:GetService("RunService").RenderStepped:Connect(function()
+	if isLockedOn and targetPart and targetPart.Parent and isInFOV(targetPart.Position) then
+		local camCF = camera.CFrame
+		local look = (targetPart.Position - camCF.Position).Unit
+		camera.CFrame = CFrame.new(camCF.Position, camCF.Position + look)
+	else
+		if isLockedOn then
+			print("Target left FOV — Unlocked")
+		end
+		isLockedOn = false
+		targetPart = nil
+	end
+end)
