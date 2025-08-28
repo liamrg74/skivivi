@@ -1,0 +1,149 @@
+-- // Local Player & Services
+local player = game.Players.LocalPlayer
+local mouse = player:GetMouse()
+local camera = workspace.CurrentCamera
+local UIS = game:GetService("UserInputService")
+local RS = game:GetService("RunService")
+
+-- // Rush Point Player Folder
+local headsFolder = workspace:WaitForChild("MapFolder"):WaitForChild("Players")
+
+-- // FOV Circle GUI
+local fovCircle = Instance.new("Frame")
+fovCircle.Name = "FOVCircle"
+fovCircle.Size = UDim2.new(0, 120, 0, 120)
+fovCircle.AnchorPoint = Vector2.new(0.5, 0.5)
+fovCircle.Position = UDim2.new(0.5, 0, 0.5, 0)
+fovCircle.BackgroundColor3 = Color3.fromRGB(255, 0, 0)
+fovCircle.BackgroundTransparency = 1
+fovCircle.BorderSizePixel = 0
+
+local uiCorner = Instance.new("UICorner")
+uiCorner.CornerRadius = UDim.new(1, 0)
+uiCorner.Parent = fovCircle
+
+local gui = player:WaitForChild("PlayerGui"):FindFirstChild("ScreenGui") or Instance.new("ScreenGui", player.PlayerGui)
+gui.Name = "ScreenGui"
+gui.ResetOnSpawn = false
+fovCircle.Parent = gui
+
+-- // Lock-On Variables
+local isLockedOn = false
+local targetPart = nil
+
+-- Check if position is in FOV
+local function isInFOV(worldPos)
+	local screenPos, onScreen = camera:WorldToScreenPoint(worldPos)
+	if not onScreen then return false end
+	local circleCenter = Vector2.new(
+		fovCircle.AbsolutePosition.X + fovCircle.AbsoluteSize.X / 2,
+		fovCircle.AbsolutePosition.Y + fovCircle.AbsoluteSize.Y / 2
+	)
+	local distance = (Vector2.new(screenPos.X, screenPos.Y) - circleCenter).Magnitude
+	return distance <= fovCircle.AbsoluteSize.X / 2
+end
+
+-- Find closest head inside FOV
+local function findHeadTarget()
+	local closestHead = nil
+	local closestDist = math.huge
+
+	for _, model in pairs(headsFolder:GetChildren()) do
+		if model:IsA("Model") then
+			local head = model:FindFirstChild("Head")
+			if head and head:IsA("BasePart") and isInFOV(head.Position) then
+				local screenPos = camera:WorldToScreenPoint(head.Position)
+				local circleCenter = Vector2.new(
+					fovCircle.AbsolutePosition.X + fovCircle.AbsoluteSize.X / 2,
+					fovCircle.AbsolutePosition.Y + fovCircle.AbsoluteSize.Y / 2
+				)
+				local dist = (Vector2.new(screenPos.X, screenPos.Y) - circleCenter).Magnitude
+				if dist < closestDist then
+					closestHead = head
+					closestDist = dist
+				end
+			end
+		end
+	end
+
+	return closestHead
+end
+
+-- Lock-On Key (E)
+UIS.InputBegan:Connect(function(input, gpe)
+	if gpe then return end
+	if input.KeyCode == Enum.KeyCode.E then
+		if not isLockedOn then
+			local found = findHeadTarget()
+			if found then
+				targetPart = found
+				isLockedOn = true
+				print("Locked on to: " .. targetPart:GetFullName())
+			end
+		end
+	end
+end)
+
+-- Update Camera each frame
+RS.RenderStepped:Connect(function()
+	if isLockedOn and targetPart and targetPart.Parent and isInFOV(targetPart.Position) then
+		local camCF = camera.CFrame
+		local look = (targetPart.Position - camCF.Position).Unit
+		camera.CFrame = CFrame.new(camCF.Position, camCF.Position + look)
+	else
+		if isLockedOn then
+			print("Target left FOV — Unlocked")
+		end
+		isLockedOn = false
+		targetPart = nil
+	end
+end)
+
+-- // ===== BILLBOARD ESP (Box + Name) =====
+local function createBillboard(model)
+	if not model:FindFirstChild("HumanoidRootPart") then return end
+
+	local billboard = Instance.new("BillboardGui")
+	billboard.Name = "ESP"
+	billboard.AlwaysOnTop = true
+	billboard.Size = UDim2.new(4, 0, 5, 0)
+	billboard.StudsOffset = Vector3.new(0, 2.5, 0)
+	billboard.Adornee = model.HumanoidRootPart
+	billboard.Parent = model
+
+	-- Box
+	local box = Instance.new("Frame")
+	box.Size = UDim2.new(1, 0, 1, 0)
+	box.BackgroundTransparency = 1
+	box.BorderSizePixel = 2
+	box.BorderColor3 = Color3.fromRGB(0, 255, 0)
+	box.Parent = billboard
+
+	-- Name
+	local name = Instance.new("TextLabel")
+	name.Text = model.Name
+	name.TextColor3 = Color3.fromRGB(255, 255, 255)
+	name.BackgroundTransparency = 1
+	name.Size = UDim2.new(1, 0, 0, 20)
+	name.Position = UDim2.new(0, 0, -0.2, -20)
+	name.Font = Enum.Font.SourceSansBold
+	name.TextScaled = true
+	name.Parent = billboard
+end
+
+-- Apply ESP to existing
+for _, model in ipairs(headsFolder:GetChildren()) do
+	if model:IsA("Model") and model:FindFirstChild("HumanoidRootPart") then
+		createBillboard(model)
+	end
+end
+
+-- New models
+headsFolder.ChildAdded:Connect(function(model)
+	if model:IsA("Model") then
+		model:WaitForChild("HumanoidRootPart", 5)
+		if model:FindFirstChild("HumanoidRootPart") then
+			createBillboard(model)
+		end
+	end
+end)
