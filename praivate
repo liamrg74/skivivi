@@ -1,0 +1,464 @@
+local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))() 
+local Players = game:GetService("Players") 
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+
+local Window = Rayfield:CreateWindow({
+   Name = "pls let me out of here i spent 4 hours 😭😭",
+   LoadingTitle = "pls help",
+   LoadingSubtitle = "im crine son",
+   ConfigurationSaving = { Enabled = true, FolderName = "eq_obby", FileName = "Config" }
+})
+
+Window.ModifyTheme('Ocean')
+
+Players.PlayerAdded:Connect(function(player)
+    if player.Name == "NcraftPAlt" then
+        Rayfield:Notify({Title = "leav", Content = "ncraftpalt joined! leave leave leave leave leave leave leave leave leave leave leave leave leave leave leave leave leave leave leave leave leave leave leave leave leave leave leave leave leave leave leave leave leave leave leave leave leave leave leave leave ", Duration = 10^1000})
+    end
+end)
+
+-- invoke
+local function PurchaseItem(itemName)
+    local remote = ReplicatedStorage:WaitForChild("Purchasing", 5)
+    if remote then
+        local success, err = pcall(function()
+            remote:InvokeServer(itemName, 149827570)
+        end)
+        if not success then warn("Purchase failed for " .. itemName) end
+    end
+end
+
+-- tabs
+local OGTab = Window:CreateTab("ogs",2831673023)
+local RecoloredTab = Window:CreateTab("diffirent color",2831673023)
+local IQTab = Window:CreateTab("rare",2831673023)
+local GalaxyTab = Window:CreateTab("galxy",2831673023)
+local ToolsTab = Window:CreateTab("warning",2831673023)
+local UsefulTab = Window:CreateTab("usefull i think",2831673023)
+local BillionTab = Window:CreateTab("og for 1b",2831673023)
+local FunTab = Window:CreateTab("fun",2831673023)
+local AllTab = Window:CreateTab("all tools",2831673023)
+local MiniTab = Window:CreateTab("tiny",2831673023)
+
+IQTab:CreateSection("Rare")
+
+local rareIQs = {
+    "IQ -300M", 
+	"IQ",
+	"IQ 305M", 
+    "Arena Trophy", 
+	"IQ 4,300,000", 
+    "IQ 200 Trillion", 
+    "IQ -1 Billion Medal", 
+	"Battle Trophy", 
+	"IQ 1 Googol Medal",
+    "IQ 10 Decillion Medal",
+    "IQ 2 Vigintillion Medal", 
+	"IQ poopillion",
+	"IQ 1 Centillion", 
+    "IQ 1 Googolplex", 
+    "IQ poopillion diarrhea", 
+	"IQ 3.5 Trigentillion", 
+	"Cosmic", 
+    "IQ 1 Trigentillion", 
+	"IQ -43 Nonillion", 
+}
+---- idont know wahdad
+for _, name in pairs(rareIQs) do
+    IQTab:CreateButton({Name = name, Callback = function() PurchaseItem(name) end})
+end
+
+RecoloredTab:CreateSection("Recolored")
+
+local recoloredItems = {
+    "IQ 3 Nonillion Medal",
+    "IQ 2 Vigintillion Medal",     
+    "IQ 1.2 Septillion",     
+    "IQ 5 Quintillion",     
+    "IQ 1.1B Trophy",     
+    "IQ 3.5 Trigentillion", 
+    "Solar Glove Recoloured",
+    "IQ 1....K Trophy",
+    "IQ 1.5 Nonillion",      
+    "IQ 2 Nonillion Medal",
+    "IQ 50M Trophy",      
+    "IQ 1.1 Quadrillion",   
+    "IQ 2 Septillion", 
+}
+
+for _, name in pairs(recoloredItems) do
+    RecoloredTab:CreateButton({Name = name, Callback = function() PurchaseItem(name) end})
+end
+
+UsefulTab:CreateSection("useful i think")
+local usefulTools = {
+    "IQ 1 Trophy",
+	"Galaxy Spaceship", 
+	"EmeraldSpaceship", 
+	"Spaceship", 
+    "Galaxy Warp", 
+	"DiamondSpaceship", 
+	"Galaxy", 
+	"IQ 232 Decillion", 
+    "IQ 601 Nonillion", 
+	"GoldSpaceship",
+    "Bronze Spaceship",
+	"IQ 4.6B", 
+	"Carbon Fiber Spaceship", 
+	"IQ 702 Decillion",
+	"IQ 50 Quintillion",
+    "AmethystSpaceship", 
+	"RubySpaceship", 
+	"IQ Brain Cell", 
+}
+for _, name in pairs(usefulTools) do
+    UsefulTab:CreateButton({Name = name, Callback = function() PurchaseItem(name) end})
+end
+
+
+ToolsTab:CreateSection("oh yeah becareful with this one")
+local dangerous = { 
+	"RedHyperLaser", 
+	"Redstone Sword",
+	"Solar Glove", 
+	"InfinityGauntlet", 
+    "LaserScythe", 
+	"Flying Telescope", 
+	"LaserFingerPointers", 
+}
+for _, name in pairs(dangerous) do
+    ToolsTab:CreateButton({Name = name, Callback = function() PurchaseItem(name) end})
+end
+
+
+MiniTab:CreateSection("tiny")
+local minis = {
+	"IQ 20QA Medal Mini's", 
+	"IQ Omega Mini's", 
+	"IQ 1B Trophy Mini's", 
+	"IQ 1 Septillion Mini's", 
+	"IQ 1T Medal Mini's", 
+	"Mini IQ -1 Billion Medal",
+	"IQ 1 Trigentillion Mini's", 
+	"IQ 1 Googol Medal Mini's", 
+}
+for _, name in pairs(minis) do
+    MiniTab:CreateButton({Name = name, Callback = function() PurchaseItem(name) end})
+end
+
+GalaxyTab:CreateSection("galaxy 1 and 2")
+local galaxy = {
+	"IQ 1Q Piece", 
+	"IQ 700 Decillion", 
+	"IQ 450 Quadrillion", 
+	"IQ 1T Piece", 
+	"IQ 999 Quadrillion", 
+	"IQ -68M", 
+    "IQ 20QA Medal", 
+	"IQ -23 Nonillion",
+	"IQ 556M", 
+	"IQ 5B", 
+    "IQ 100 Decillion Trophy", 
+	"IQ 1 Tetralogue", 
+	"IQ 1 Undecillion", 
+	"IQ 600 Nonillion",
+	"IQ 660 Quadrillion", 
+	"IQ 1B Piece", 
+	"IQ 765M", 
+	"IQ 650 Nonillion", 
+	"IQ -70M", 
+	"IQ 750 Decillion" 
+}
+
+for _, name in pairs(galaxy) do
+    GalaxyTab:CreateButton({Name = name, Callback = function()PurchaseItem(name) end})
+end
+
+BillionTab:CreateSection("IQ 1B OG Gears")
+local bgears = {"FuseBomb", "Classic Plane", "EarthOrb", "MedusaHead", "PirateThrowingHatchets", "RageTable","BodySwapPotion", "ThrowingBarrel", "MagicCarpet","Taser","Moneybag"}
+
+for _, name in pairs(bgears) do
+    BillionTab:CreateButton({Name = name, Callback = function()PurchaseItem(name) end})
+end
+
+OGTab:CreateSection("og")
+local ogiq = {
+	"IQ 1 Decillion OG", 
+    "IQ 1T OG", 
+	"IQ 1B OG", 
+	"IQ 1M OG", 
+	"IQ 100K OG", 
+    "IQ 1 Septillion OG", 
+	"IQ 1 Quadrillion OG", 
+	"IQ 1 Nonillion OG",
+	"IQ 1 Quintillion OG", 
+	"IQ 10 Nonillion", 
+	"IQ 1K OG",
+}
+
+for _, name in pairs(ogiq) do
+    OGTab:CreateButton({Name = name, Callback = function()PurchaseItem(name) end})
+end
+
+FunTab:CreateSection("Funny")
+local funstuff = {
+	"ultimate cheesey",
+	"ultimate cheese", 
+	"DoubleCheezburger", 
+	"Fivetuple Cheese Burger", 
+	"Ajwa", 
+	"Triple Cheese",
+}
+
+for _, name in pairs(funstuff) do
+    FunTab:CreateButton({Name = name, Callback = function()PurchaseItem(name) end})
+end
+
+AllTab:CreateSection("all the tols")
+
+local ReplicatedTools = {
+    "Smore",
+    "IQ 11K Trophy",
+    "IQ 1 Googol Medal",
+    "IQ 750 Decillion",
+    "Classic Plane",
+    "IQ 556M",
+    "IQ 100 Trophy",
+    "IQ 1 Decillion Concept",
+    "Spaceship",
+    "Virus Trophy",
+    "IQ 13K Trophy",
+    "IQ 2M Trophy",
+    "RedHyperLaser",
+    "IQ 900K Trophy",
+    "IQ 700 Decillion",
+    "IQ 1.5 Nonillion",
+    "IQ 18M",
+    "IQ 945M",
+    "HexSpitter",
+    "MagicCarpet",
+    "IQ 200 Trillion",
+    "IQ 5 Quintillion",
+    "SapphireSpaceship",
+    "IQ 1 Googolplex",
+    "RageTable",
+    "WizardFlySpell",
+    "IQ 36K Trophy Mini",
+    "IQ 20 Trophy",
+    "IQ 300K Trophy Mini",
+    "Chocolate Bar",
+    "IQ 1T Medal Mini's",
+    "IQ 45M",
+    "IQ 97M",
+    "IQ 1T Piece",
+    "SpeedyBoots",
+    "IQ 3.4M",
+    "IQ 1969",
+    "IQ 765M",
+    "IQ 601 Nonillion",
+    "IQ 32T Medal",
+    "LaserFingerPointers",
+    "IQ -71M",
+    "IQ -1 Billion Medal",
+    "IQ 100K OG",
+    "EarthOrb",
+    "IQ 10 Decillion Medal",
+    "IQ 1 Undecillion",
+    "Hawk",
+    "Taco",
+    "IQ H2O",
+    "IQ 50K Trophy",
+    "IQ 55 Septillion",
+    "IQ -250,505,505",
+    "IQ 13M",
+    "IQ 0 Trophy",
+    "Galaxy Katana",
+    "IQ 500K Trophy",
+    "IQ 150K Trophy",
+    "Weapon Of IQ 999.9M",
+    "DoubleCheezburger",
+    "IQ 30M",
+    "Mini IQ -1 Billion Medal",
+    "IQ 16M",
+    "IQ 1 Centillion",
+    "Redstone Sword",
+    "IQ 1 Quadrillion OG",
+    "IQ 450 Quadrillion",
+    "IQ 500K Trophy Mini",
+    "Galaxy",
+    "Cosmic",
+    "IQ 200M",
+    "IQ 1 Decillion",
+    "IQ 72M",
+    "LaserScythe",
+    "Moneybag",
+    "IQ 2 Septillion",
+    "IQ 1 Nonillion OG",
+    "GoldSpaceship",
+    "Flying Telescope",
+    "IQ 50K Trophy Mini",
+    "SpaceSandwich",
+    "IQ 21M",
+    "ThrowingBarrel",
+    "IQ 1 Septillion",
+    "IQ 650M Trophy",
+    "IQ 200K Trophy",
+    "IQ 100K Trophy",
+    "IQ 200 Trophy",
+    "IQ Rainbow",
+    "IQ 40 Trophy",
+    "IQ 1B Piece",
+    "AmethystSpaceship",
+    "IQ 1 Vigintillion Medal",
+    "IQ 4M",
+    "IQ 1 Trigentillion Mini's",
+    "IQ 9M",
+    "IQ 1B Trophy",
+    "RedFidgetSpinner",
+    "IQ 200K Trophy Mini",
+    "IQ 1M Trophy",
+    "IQ 1.5M Trophy",
+    "IQ 1K Trophy",
+    "IQ 1 Quintillion",
+    "IQ 1 Quadrillion",
+    "Battle Trophy",
+    "IQ 1400s",
+    "BlueFidgetSpinner",
+    "DiamondSpaceship",
+    "IQ -23 Nonillion",
+    "IQ 2 Nonillion Medal",
+    "IQ 39M",
+    "FuseBomb",
+    "EmeraldSpaceship",
+    "IQ 999.9M",
+    "IQ 702 Decillion",
+    "IQ 1 Trophy",
+    "IQ 650 Nonillion",
+    "ClassicTrowel",
+    "Toy Spaceship",
+    "Solar Glove Recoloured",
+    "IQ 1M OG",
+    "IQ 1B OG",
+    "IQ 1.2 Septillion",
+    "IQ 600 Nonillion",
+    "MedusaHead",
+    "IQ 1900",
+    "IQ 1 Googol-D",
+    "IQ 305M",
+    "IQ 1 Septillion Mini's",
+    "Ajwa",
+    "IQ 50M Trophy",
+    "RidableUFO",
+    "Toy Gold Spaceship",
+    "IQ 300K Trophy",
+    "IQ 1 Trigentillion",
+    "10M VISITS TROPHY",
+    "IQ 6M",
+    "IQ 1....K Trophy",
+    "IQ Obby",
+    "IQ 4.6B",
+    "IQ poopillion diarrhea",
+    "Supporter Trophy",
+    "IQ 1T OG",
+    "IQ 1.1B Trophy",
+    "FreezeRay",
+    "Acceleration Coil",
+    "IQ 1 Tetralogue",
+    "IQ 700K Trophy",
+    "ultimate cheese",
+    "IQ 400K Trophy",
+    "IQ 3 Nonillion Medal",
+    "IQ 34M",
+    "Fivetuple Cheese Burger",
+    "Arena Trophy",
+    "IQ 1 Septillion OG",
+    "IQ 20K Trophy",
+    "IQ 2016",
+    "IQ 3.5 Trigentillion",
+    "IQ 100M Trophy",
+    "IQ 101K Trophy",
+    "IQ 660 Quadrillion",
+    "IQ 15M",
+    "IQ 1T Medal",
+    "PirateThrowingHatchets",
+    "IQ 5M",
+    "iq v470m",
+    "IQ 1 Nonillion",
+    "IQ -68M",
+    "IQ 7M",
+    "IQ 2 Vigintillion Medal",
+    "IQ 845M",
+    "IQ 45K Trophy",
+    "IQ 1 Decillion OG",
+    "IQ 1.1 Quadrillion",
+    "Taser",
+    "IQ 600K Trophy",
+    "IQ -43 Nonillion",
+    "IQ 999,999",
+    "IQ 10M",
+    "PompousTheCloud",
+    "IQ 232 Decillion",
+    "ultimate cheesey",
+    "IQ 400K Trophy Mini",
+    "IQ 10 Nonillion",
+    "IQ Omega Mini's",
+    "IQ 1A7",
+    "IQ 36K Trophy",
+    "BananaPeel",
+    "IQ 9K Trophy",
+    "Spaceship Traveler",
+    "IQ 300 Trillion",
+    "IQ 1B Trophy Mini's",
+    "Galaxy Warp",
+    "Galaxy Spaceship",
+    "IQ 1.3M Trophy",
+    "IQ 1T Medal Anniversary Skin",
+    "IQ",
+    "BodySwapPotion",
+    "InfinityGauntlet",
+    "IQ 1 Googol Medal Mini's",
+    "StarbloxLatte",
+    "Spray",
+    "IQ 20QA Medal",
+    "HotChocolate",
+    "IQ 3M",
+    "IQ 20QA Medal Mini's",
+    "Solar Glove",
+    "Robux Trophy",
+    "IQ -10",
+    "IQ 1 Quintillion OG",
+    "IQ 4,300,000",
+    "IQ 1 Octillion Concept",
+    "IQ 999 Quadrillion",
+    "IQ poopillion",
+    "IQ -300M",
+    "IQ 100 Decillion Trophy",
+    "IQ 605 Nonillion",
+    "IQ Concept",
+    "IQ 1Q Piece",
+    "IQ 52,000,000",
+    "IQ 1 Googol",
+    "RubySpaceship",
+    "IQ 250M",
+    "IQ 5B",
+    "IQ 102,000,000",
+    "IQ 4 Septillion",
+    "IQ 1 Octillion",
+    "Bronze Spaceship",
+    "IQ 50 Quintillion",
+    "IQ -70M",
+    "IQ 100K Trophy Mini",
+    "IQ 1K OG",
+    "IQ -32 Nonillion",
+    "IQ Brain Cell",
+    "Carbon Fiber Spaceship",
+    "Triple Cheese",
+    "IQ poopy",
+    "IQ 800K Trophy",
+    "IQ 3.5M"
+}
+for _, name in pairs(ReplicatedTools) do
+    AllTab:CreateButton({Name = name, Callback = function()PurchaseItem(name) end})
+end
+
+Rayfield:LoadConfiguraton()
